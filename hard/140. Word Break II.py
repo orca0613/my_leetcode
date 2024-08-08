@@ -23,14 +23,15 @@ from typing import List
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         
-        table =[]
         answer = []
         l = len(s)
+        table =[[] for _ in range(l)]
         
         for i in range(l):
-            table.append([])
-            for j in range(i + 1, l + 1):
-                table[i].append(s[i:j])
+            t = ""
+            for char in s[i:]:
+                t += char
+                table[i].append(t)
                 
         w_dict = set(wordDict)
         
@@ -46,5 +47,3 @@ class Solution:
         
         w_break(0, "")
         return answer
-                
-        

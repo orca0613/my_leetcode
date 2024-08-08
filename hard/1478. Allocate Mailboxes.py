@@ -26,33 +26,38 @@ from typing import List
 
 class Solution:
     def minDistance(self, houses: List[int], k: int) -> int:
-        memo = {}
-        length = len(houses)
         houses.sort()
-        def func(lst):
-            if len(lst) % 2:
-                p = lst[len(lst) // 2]
-            else:
-                p = (lst[len(lst) // 2] + lst[len(lst) // 2 - 1]) // 2
-            n = 0
-            for i in range(len(lst)):
-                n += abs(p - lst[i])
-            return n
-        def func2(idx, n):
-            if n == 1:
-                return func(houses[idx:])
-            if length - idx < n:
-                return 10 ** 7
+        total_houses = len(houses)
+        memo = {}
+        def get_distance(lst):
+            l = len(lst)
+            mail_box = lst[l // 2]
+            r = 0
+            for h in lst:
+                r += abs(mail_box - h)
+            return r
+        
+        def get_total_distance(idx, n):
+            if total_houses - idx <= n:
+                return 0
             key = (idx, n)
+            r = float("inf")
             if key in memo:
                 return memo[key]
-            r = 10 ** 7
-            for i in range(idx + 1, len(houses)):
-                r = min(func(houses[idx:i]) + func2(i, n - 1), r)
+            if n == 1:
+                r = get_distance(houses[idx:])
+                memo[key] = r
+                return r
+
+            for i in range(idx, total_houses - n + 1):
+                r = min(r, get_distance(houses[idx:i + 1]) + get_total_distance(i + 1, n - 1))
+                
             memo[key] = r
             return r
-        return func2(0, k)
-                
+        
+        return get_total_distance(0, k)
             
+            
+        
         
         

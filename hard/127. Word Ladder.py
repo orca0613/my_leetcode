@@ -25,7 +25,7 @@ class Solution:
         if endWord not in wordList:
             return 0
         
-        def similar(w1, w2):
+        def is_similar(w1, w2):
             n = 0
             for i in range(len(w1)):
                 if w1[i] != w2[i]:
@@ -34,7 +34,6 @@ class Solution:
                         return False
             return True
         
-        memo = {}
         n = 1
         stack = [beginWord]
         t = [beginWord]
@@ -44,7 +43,7 @@ class Solution:
             while stack:
                 word = stack.pop()
                 for i in range(len(wordList) - 1, -1, -1):
-                    if similar(word, wordList[i]):
+                    if is_similar(word, wordList[i]):
                         t.append(wordList.pop(i))
             if endWord in t:
                 return n

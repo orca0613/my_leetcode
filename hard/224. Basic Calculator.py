@@ -19,33 +19,29 @@
 
 class Solution:
     def calculate(self, s: str) -> int:
+        s = s.replace(" ", "")
+        print(s)
         def cal(monomial):
             num = 0
-            cur = ""
+            cur = "0"
             add = True
             for char in monomial:
                 if char.isdigit():
                     cur += char
                 elif char == "+":
-                    if cur:
-                        if add:
-                            num += int(cur)
-                        else:
-                            num -= int(cur)
-                    add = True
-                    cur = ""
-                elif char == "-":
-                    if cur:
-                        if add:
-                            num += int(cur)
-                        else:
-                            num -= int(cur)
-                        add = False
-                    elif add:
-                        add = False
+                    if add:
+                        num += int(cur)
                     else:
-                        add = True
-                    cur = ""
+                        num -= int(cur)
+                    add = True
+                    cur = "0"
+                elif char == "-":
+                    if add:
+                        num += int(cur)
+                    else:
+                        num -= int(cur)
+                    add = cur == "0" and not add
+                    cur = "0"
             if add:
                 num += int(cur)
             else:
@@ -65,4 +61,5 @@ class Solution:
             idx += 1
         return int(cal(s))
                 
-        
+test = Solution()
+print(test.calculate("1-(     -2)"))

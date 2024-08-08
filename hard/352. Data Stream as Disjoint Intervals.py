@@ -37,15 +37,12 @@ class SummaryRanges:
         
 
     def addNum(self, value: int) -> None:
-        if not self.stream:
-            self.stream.append([value, value])
-        else:
-            for i in range(len(self.stream)):
-                if self.stream[i][0] > value:
-                    self.stream.insert(i, [value, value])
-                    return
+        if not self.stream or self.stream[-1][1] < value:
             self.stream.append([value, value])
             return
+        pos = self._get_pos(value)
+        self.stream.insert(pos, [value, value])
+        return
                 
     def getIntervals(self) -> List[List[int]]:
         for i in range(len(self.stream) - 1, 0, -1):
@@ -56,9 +53,28 @@ class SummaryRanges:
                 self.stream[i - 1][1] = max(self.stream[i][1], self.stream[i - 1][1])
                 self.stream.pop(i)
         return self.stream 
+    
+
+    def _get_pos(self, val):
+        left = 0
+        right = len(self.stream) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if self.stream[mid][0] > val:
+                right = mid
+            else:
+                left = mid + 1
+        return right
+        
 
 
 # Your SummaryRanges object will be instantiated and called as such:
 # obj = SummaryRanges()
 # obj.addNum(value)
 # param_2 = obj.getIntervals()
+
+# Input
+# ["SummaryRanges", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals", "addNum", "getIntervals"]
+# [[], [1], [], [3], [], [7], [], [2], [], [6], []]
+# Output
+# [null, null, [[1, 1]], null, [[1, 1], [3, 3]], null, [[1, 1], [3, 3], [7, 7]], null, [[1, 3], [7, 7]], null, [[1, 3], [6, 7]]]

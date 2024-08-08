@@ -28,10 +28,9 @@ class Solution:
                 return z_nineteen[num]
             t = num // 10
             num %= 10
+            r = twenty_ninty[t - 2]
             if num:
-                r = twenty_ninty[t - 2] + " " + z_nineteen[num]
-            else:
-                r = twenty_ninty[t - 2]
+                r += " " + z_nineteen[num]
             return r
         
         def convert(num):
@@ -39,10 +38,9 @@ class Solution:
                 return convert_double(num)
             h = num // 100
             num %= 100
+            r = z_nineteen[h] + " Hundred"
             if num:
-                r = z_nineteen[h] + " Hundred " + convert_double(num)
-            else:
-                r = z_nineteen[h] + " Hundred"
+                r += " " + convert_double(num)
             return r
         
         u = 0

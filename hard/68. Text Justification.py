@@ -54,25 +54,26 @@ class Solution:
         
         def modify(word):
             lst = word.split(' ')
-            if len(lst) == 1:
-                word += ' ' * (maxWidth - len(word))
-                return word
-            else:
-                total_empty_space = maxWidth - len(word) + len(lst) - 1
-                for i in range(len(lst) - 1):
-                    n = math.ceil(total_empty_space / (len(lst) - i - 1))
-                    lst[i] += ' ' * n
-                    total_empty_space -= n
-                return ''.join(lst)
+            l = len(lst) - 1
+            total_empty_space = maxWidth - len(word) + l
+            if l == 1:
+                word += ' ' * (total_empty_space - 1)
+                return word[:maxWidth]
+            for i in range(l - 1):
+                n = math.ceil(total_empty_space / (l - i - 1))
+                lst[i] += ' ' * n
+                total_empty_space -= n
+            return ''.join(lst)
 
         result = []
-        temp = words[0]
-        for i in range(1, len(words)):
-            if len(temp) + len(words[i]) + 1 <= maxWidth:
-                temp += ' ' + words[i]
+        temp = ""
+        for word in words:
+            if len(temp) + len(word) <= maxWidth:
+                temp += word + " "
             else:
                 result.append(modify(temp))
-                temp = words[i]
+                temp = word + " "
+                
         temp += ' ' * (maxWidth - len(temp))
-        result.append(temp)
+        result.append(temp[:maxWidth])
         return result

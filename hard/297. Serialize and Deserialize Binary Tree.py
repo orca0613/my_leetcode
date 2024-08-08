@@ -66,10 +66,7 @@ class Codec:
         
         def making_tree(tree, n):
             v = lst[n]
-            if not v == 'null':
-                tree.val = int(v)
-            else:
-                tree.val = v
+            tree.val = int(v) if v != "null" else v
             if n * 2 < l:
                 tree.left = TreeNode()
                 making_tree(tree.left, n * 2)

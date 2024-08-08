@@ -28,13 +28,15 @@ class Solution:
     def longestIncreasingPath(self, matrix: List[List[int]]) -> int:
         m = len(matrix)
         n = len(matrix[0])
-        
-        visited = [[False] * n for _ in range(m)]
+
         memo = {}
         result = 1
         
         y_dir = [0, 1, 0, -1]
         x_dir = [1, 0, -1, 0]
+
+        def is_inside(y, x):
+            return (0 <= y < m and 0 <= x < n)
         
         def func(row, col):
             key = (row, col)
@@ -43,16 +45,14 @@ class Solution:
             res = 1
             for i in range(4):
                 r, c = row + y_dir[i], col + x_dir[i]
-                if 0 <= r < m and 0 <= c < n and matrix[r][c] > matrix[row][col]:
+                if is_inside(r, c) and matrix[r][c] > matrix[row][col]:
                     res = max(res, func(r, c) + 1)
             memo[key] = res
-            visited[row][col] = True
             return res
         
         for i in range(m):
             for j in range(n):
-                if not visited[i][j]:
-                    result = max(result, func(i, j))
+                result = max(result, func(i, j))
         
         return result
                 

@@ -42,6 +42,3 @@ class Solution:
                     c = ratings[idx]
                     idx += 1
         return sum(r[:-1])
-                    
-                    
-        

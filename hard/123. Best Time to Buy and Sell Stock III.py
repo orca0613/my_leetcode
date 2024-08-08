@@ -40,9 +40,14 @@ class Solution:
         
         max_profit = 0
         cur_price = prices[0]
-        for i in range(1, total_days):
-            if prices[i] > cur_price:
-                max_profit = max(max_profit, prices[i] - cur_price + table[i + 1])
+        for i, price in enumerate(prices):
+            if price > cur_price:
+                max_profit = max(max_profit, price - cur_price + table[i + 1])
             else:
-                cur_price = prices[i]
+                cur_price = price
         return max_profit
+    
+test = Solution()
+print(test.maxProfit([3,3,5,0,0,3,1,4]))
+print(test.maxProfit([1,2,3,4,5]))
+print(test.maxProfit([7,6,4,3,1]))

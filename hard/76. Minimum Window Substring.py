@@ -21,36 +21,33 @@
 # Explanation: Both 'a's from t must be included in the window.
 # Since the largest window of s only has one 'a', return empty string.
 
+from collections import defaultdict
+
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        memo = {}
+        memo = defaultdict(int)
         char_set = set(t)
         for char in t:
-            if char in memo:
-                memo[char] += 1
-            else:
-                memo[char] = 1
+            memo[char] += 1
         result = s + "!"
         left = 0
         
         def window(l, cur, w):
             while l < len(s):
                 a = s[l]
-                if a in memo:
-                    memo[a] += 1
-                    if memo[a] > 0:
-                        char_set.add(a)
-                        w = min(w, s[l:cur + 1], key=lambda x: len(x))
-                        return (l + 1, w)
+                memo[a] += 1
+                if memo[a] > 0:
+                    char_set.add(a)
+                    sliced = s[l:cur + 1]
+                    w = sliced if len(sliced) < len(w) else w
+                    return (l + 1, w)
                 l += 1
         
-        for i in range(len(s)):
-            c = s[i]
-            if c in memo:
-                memo[c] -= 1
-                if memo[c] == 0:
-                    char_set.remove(c)
-                    if not char_set:
-                        left, result = window(left, i, result)
+        for i, c in enumerate(s):
+            memo[c] -= 1
+            if not memo[c]:
+                char_set.remove(c)
+                if not char_set:
+                    left, result = window(left, i, result)
         return result if len(result) <= len(s) else ""
-        
+    

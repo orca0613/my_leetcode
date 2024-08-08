@@ -42,19 +42,17 @@ class Solution(object):
                     break
             return (merged, size)
                 
-        def split(lst, n):
+        def split(lst):
             if len(lst) == 1:
                 return (lst, lst[0])
             else:
                 pivot = len(lst) // 2
-                l = split(lst[:pivot], n)
-                r = split(lst[pivot:], n)
+                l = split(lst[:pivot])
+                r = split(lst[pivot:])
                 return merge(l[0], r[0], max(l[1], r[1]))
         
-        return split(heights, 0)[1]
-                
-                
-                
+        return split(heights)[1]
+    
                 
             
                     

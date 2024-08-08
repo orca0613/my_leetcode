@@ -43,12 +43,12 @@ class Solution:
             key = (str1, str2)
             if key in memo:
                 return memo[key]
-            
             r = False
             for i in range(1, len(str1)):
                 left, right = str2[:i], str2[i:]
                 idx = len(right)
                 r = r or (is_scramble(str1[:idx], right) and is_scramble(str1[idx:], left))
+
                 r = r or (is_scramble(str1[:i], left) and is_scramble(str1[i:], right))
             
             memo[key] = r

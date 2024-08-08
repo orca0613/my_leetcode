@@ -18,25 +18,22 @@ import math
 from typing import List
 class Solution:
     def maxPoints(self, points: List[List[int]]) -> int:
-        if len(points) == 1:
-            return 1
+        if len(points) < 3:
+            return len(points)
         max_val = 0
-        for point in points:
+        for i, [x1, y1] in enumerate(points):
             temp = defaultdict(int)
-            x1, y1 = point[0], point[1]
-            for i in range(len(points)):
-                x2, y2 = points[i][0], points[i][1]
+            for x2, y2 in points[i + 1:]:
+                if x1 == x2 and y1 == y2:
+                    continue
                 dx, dy = x1 - x2, y1 - y2
                 if dx == 0:
-                    if dy == 0:
-                        continue
                     temp[0] += 1
                     continue
+                if dx * dy < 0:
+                    dec = True
                 else:
-                    if dx * dy < 0:
-                        dec = True
-                    else:
-                        dec = False
+                    dec = False
                 dx, dy = abs(dx), abs(dy)
                 gradient = math.gcd(dx, dy)
                 dx //= gradient
@@ -49,5 +46,3 @@ class Solution:
             for key in temp:
                 max_val = max(max_val, temp[key] + 1)
         return max_val
-
-        
